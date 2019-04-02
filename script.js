@@ -13,7 +13,19 @@ $().ready(function() {
 
 		makePaymentCall(supportedInstruments);
 	});
+	$("#test9").click(function(){
 
+		// Supported payment methods
+		var supportedInstruments = [
+				{supportedMethods: 'basic-card',
+  data: {
+    supportedNetworks:['amex', 'diners', 'discover', 'jcb', 'mastercard', 'unionpay','visa', 'mir']
+  }}
+			];
+
+
+		makePaymentCall(supportedInstruments);
+	});
 
 
 
@@ -151,18 +163,18 @@ $().ready(function() {
 				displayItems: [
 			    	{
 			      		label: 'item1',
-			      		amount: { currency: "USD", value : '$65' }, // US$65.00
+			      		amount: { currency: "USD", value : '65' }, // US$65.00
 			    	},
 			    	{
 			      		label: "Loyal customer discount",
-			      		amount: { currency: "USD", value : "-10.00" }, // -US$10.00
+			      		amount: { currency: "USD", value : "10.00" }, // -US$10.00
 			      		pending: true // The price is not determined yet
 			    	}
 			  	],
 			  	
 			  	total:  {
 			    	label: "Total",
-			    	amount: { currency: "USD", value : '$19' }, // US$55.00
+			    	amount: { currency: "USD", value : '19' }, // US$55.00
 			  	},
 
 			  	shippingOptions: [
