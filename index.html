@@ -1,49 +1,161 @@
 <!doctype html>
 <html>
+
 <head>
-<title>Samsung tests</title>
-<link rel="stylesheet" href="styles.css">
-<script src="https://code.jquery.com/jquery-3.1.1.slim.js" crossorigin="anonymous"></script>
-<script src="script.js"></script>
-<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <title>Samsung tests</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.js" crossorigin="anonymous"></script>
+    <script src="script.js"></script>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
 </head>
+
 <body>
     <nav class="product-filter">
         <h1>Samsung Tests</h1>
     </nav>
-    
-    
+
+
     <div>
-      <h1>Click on each button below to test with SPay</h1>
+        <h1>Click on each button below to test with SPay</h1>
     </div>
 
     <div id="test1">
-      <br><h3><input type="button" value="Pay without SPay-spay-installed-test1"></h3><br>
+        <br>
+        <h3><input type="button" value="Pay without SPay-spay-installed-test1"></h3><br>
     </div>
 
     <div id="test2">
-      <br><h3><input type="button" value="Pay with only SPay-Spay-installed-test2"></h3><br>
+        <br>
+        <h3><input type="button" value="Pay with only SPay-Spay-installed-test2"></h3><br>
     </div>
 
     <div id="test3">
-      <br><h3><input type="button" value="Pay with SPay-missing-productID-test3"></h3><br>
-    </div>
-    
-    <div id="test4">
-      <br><h3><input type="button" value="Pay with SPay-missing-allowCardNetwork"></h3><br>
-    </div>
-     <div id="test9">
-      <br><h3><input type="button" value="Pay"></h3><br>
+        <br>
+        <h3><input type="button" value="Pay with SPay-missing-productID-test3"></h3><br>
     </div>
 
-    <div id="result">      
+    <div id="test4">
+        <br>
+        <h3><input type="button" value="Pay with SPay-missing-allowCardNetwork"></h3><br>
+    </div>
+    <div id="test9">
+        <br>
+        <h3><input type="button" value="Pay"></h3><br>
+    </div>
+
+    <div id="result">
     </div>
 
     <div id="not_supported" style="display:none">
-      <h1>Your browser do no support PaymentRequest API, please watch this space...</h1>
+        <h1>Your browser do no support PaymentRequest API, please watch this space...</h1>
     </div>
 
+    <script>
+        $().ready(function () {
+            var test2 = document.getElementById('test2');
+            $("#test2").css("display", "none");
+            if (!window.PaymentRequest) {
+                // PaymentRequest API is not available. Forwarding to
+                // legacy form based experience.
+                $("#test2").css("display", "none");
+                return;
+            }
 
+            var supportedInstruments = [{
+                supportedMethods: ['https://samsung.com/pay'],
+                data: {
+                    //product ID obtained from Samsung onboarding portal
+                    'productId': '02510116604241796260',
+                    'allowedCardNetworks': ['AMEX', 'mastercard', "visa"],
+                    'paymentProtocol': "PROTOCOL_3DS",
+                    'merchantName': "Shop Samsung (demo)",
+                    'isReccurring': false,
+                    'orderNumber': 1000,
+                    'billingAddressRequired': "zipOnly"
+                }
+            }];
+
+            var details = {
+                displayItems: [{
+                        label: 'item1',
+                        amount: {
+                            currency: "USD",
+                            value: '65'
+                        }, // US$65.00
+                    },
+                    {
+                        label: "Loyal customer discount",
+                        amount: {
+                            currency: "USD",
+                            value: "10.00"
+                        }, // -US$10.00
+                        pending: true // The price is not determined yet
+                    }
+                ],
+
+                total: {
+                    label: "Total",
+                    amount: {
+                        currency: "USD",
+                        value: '19'
+                    }, // US$55.00
+                },
+
+                shippingOptions: [{
+                        id: 'standard',
+                        label: 'Standard shipping',
+                        amount: {
+                            currency: 'USD',
+                            value: '10.00'
+                        },
+                        selected: true
+                    },
+                    {
+                        id: 'express',
+                        label: 'Express shipping',
+                        amount: {
+                            currency: 'USD',
+                            value: '25.00'
+                        }
+                    }
+                ]
+            };
+
+            var options = {
+                requestPayerEmail: true,
+                requestPayerName: true,
+                requestShipping: true,
+                shippingType: "shipping" // "shipping"(default), "delivery" or "pickup"
+            };
+
+            var payment = new PaymentRequest(
+                supportedInstruments, // required payment method data
+                details, // required information about transaction
+                options // optional parameter for things like shipping, etc.
+            );
+
+            if (payment.canMakePayment) {
+                payment.canMakePayment().then(function (result) {
+                    if (result) {
+                        console.log('1', result);
+                        test2.style.display = "block";
+                        // User has an active payment method
+                    } else {
+                        console.log('2', payment);
+                        test2.style.display = "none";
+                        // No active payment method yet (but they could add one)
+                    }
+                }).catch(function (error) {
+                    console.log('3', error);
+                    test2.style.display = "none";
+                    // Unable to determine
+                });
+            } else {
+                console.log('9');
+            }
+
+        });
+    </script>
 </body>
-</html>
 
+</html>
