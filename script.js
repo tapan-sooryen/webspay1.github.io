@@ -146,12 +146,12 @@ $().ready(function() {
 						}
 				}];
 			} 
-
+			
 			var details = {
 				displayItems: [
 			    	{
-			      		label: prod_name,
-			      		amount: { currency: "USD", value : prod_price.replace("$", "") }, // US$65.00
+			      		label: 'item1',
+			      		amount: { currency: "USD", value : '$65') }, // US$65.00
 			    	},
 			    	{
 			      		label: "Loyal customer discount",
@@ -162,7 +162,7 @@ $().ready(function() {
 			  	
 			  	total:  {
 			    	label: "Total",
-			    	amount: { currency: "USD", value : prod_price.replace("$", "") }, // US$55.00
+			    	amount: { currency: "USD", value : '$19' }, // US$55.00
 			  	},
 
 			  	shippingOptions: [
