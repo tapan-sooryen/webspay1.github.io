@@ -34,20 +34,24 @@ $().ready(function() {
 		// Supported payment methods
 		var supportedInstruments = [
 			{
-				supportedMethods: ['https://samsung.com/pay'],
+				supportedMethods: ['https://spay.samsung.com'],
 				data: {
+					"version": "1",
   					//product ID obtained from Samsung onboarding portal
-  					'productId': '02510116604241796260',
-  					'allowedCardNetworks': ['AMEX', 'mastercard', "visa"],
+  					"productId": "2bc3e6da781e4e458b18bc",
+  					      "allowedCardNetworks": ['mastercard','visa'],
   					'paymentProtocol': "PROTOCOL_3DS",
   					'merchantName': "Shop Samsung (demo)",
-  					'isReccurring': false,
-  					'orderNumber': 1000,
-  					'billingAddressRequired': "zipOnly"
+					"merchantGatewayParameter": {"userId": "acct_17irF7F6yPzJ7wOR"},
+  					'orderNumber': '1000',
 			}
+				"isRecurring": false,
+            "billingAddressRequired": false,
+            "paymentProtocol": "PROTOCOL_3DS"
+
 		}];
-
-
+       
+            
 		makePaymentCall(supportedInstruments);
 	});
 
