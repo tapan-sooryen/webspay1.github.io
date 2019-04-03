@@ -44,7 +44,7 @@ $().ready(function() {
   					'merchantName': "Shop Samsung (demo)",
 					"merchantGatewayParameter": {"userId": "acct_17irF7F6yPzJ7wOR"},
   					'orderNumber': '1000',
-			}
+			},
 				"isRecurring": false,
             "billingAddressRequired": false,
             "paymentProtocol": "PROTOCOL_3DS"
